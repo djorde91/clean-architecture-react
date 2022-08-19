@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Hook to make sure that no commit message is lower then 10 characters
+while read line; do
+    # Skip comments
+    if [ "${line:0:1}" == "#" ]; then
+        continue
+    fi
+    if [ ${#line} -le 10 ]; then
+        echo "$(tput setaf 1)Please enter a message with at least 10 characters.$(tput sgr 0)"
+        echo "Your commit message was $(tput setaf 1)${#line} $(tput sgr 0)characters long: $(tput setaf 1)${line} $(tput sgr 0)"
+        exit 1
+    fi
+    #Break after first commit line passes validation.
+    break;
+done < "${1}"
+
+exit 0

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/_/husky.sh"
+
+# Run Jest tests
+npm run test
+
+# Run Cypress tests
+npm run cy-run
+
+## Prevent push to master|main
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "master" ] ||[ "$branch" = "main" ]; then
+  echo "$(tput setaf 1)You can't commit directly to $(tput setab 1)$(tput setaf 7)$branch$(tput sgr 0)"
+  exit 1
+fi
